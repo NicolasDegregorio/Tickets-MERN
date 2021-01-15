@@ -8,7 +8,7 @@ router.post('/', userController.login );
 
 router.get('/users', middlewares.verificarAuth, userController.getUsers);
 
-router.post('/users', userController.addUser);
+router.post('/users/add', userController.addUser);
 
 router.put('/users/:id', middlewares.verificarAuth, middlewares.isAdmin, userController.updateUser);
 
