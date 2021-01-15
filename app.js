@@ -18,7 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Mongo Db
-const uri =  'mongodb://localhost:27017/myapp'
+const uri =  'mongodb+srv://nicodeg:uefuoFLTz3ZUdTcU@nicodeg.5lpqt.mongodb.net/sigef?retryWrites=true&w=majority'
+
 const options = {useNewUrlParser: true, useCreateIndex: true}
 
 mongoose.connect(uri, options).then(
