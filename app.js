@@ -17,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // Mongo Db
 const uri =  'mongodb+srv://nicodeg:uefuoFLTz3ZUdTcU@nicodeg.5lpqt.mongodb.net/sigef?retryWrites=true&w=majority'
 
@@ -31,10 +32,10 @@ mongoose.connect(uri, options).then(
 app.use('/api', require('./routes/ticket'));
 app.use('/users', require('./routes/user'));
 app.use('/institutions', require('./routes/institution'));
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
- });
 
+app.get('/*', function(req,res) {
+		res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 
 app.set('puerto', process.env.PORT || 5000);
