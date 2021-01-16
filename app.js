@@ -31,9 +31,9 @@ mongoose.connect(uri, options).then(
 app.use('/api', require('./routes/ticket'));
 app.use('/users', require('./routes/user'));
 app.use('/institutions', require('./routes/institution'));
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+ });
 
 
 
