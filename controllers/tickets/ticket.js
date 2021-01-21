@@ -179,7 +179,7 @@ const updateTicket =  async (req, res) => {
       body,
       {new: true}
     );
-    const ticketUpdate = await ticketDb.populate('team._user').execPopulate()
+    const ticketUpdate = await ticketDb.populate('team._user').populate('institution').execPopulate()
     console.log(ticketUpdate)
     res.json(ticketDb);  
   } catch (error) {
