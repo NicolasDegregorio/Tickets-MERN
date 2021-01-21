@@ -8,6 +8,6 @@ const institutionSchema = new Schema ({
     cue: {type: Number}
 })
 
-const Institution = mongoose.model('Intitution', institutionSchema);
+const Institution = mongoose.model('Institution', institutionSchema);
 
 export default Institution

@@ -24,7 +24,7 @@ const addTicket = async(req, res) => {
 const getTicket = async(req, res) => {
   const _id = req.params.id;
   try {
-    const ticketDb = await Ticket.findOne({_id}).populate('team._user').populate('comments._user');
+    const ticketDb = await Ticket.findOne({_id}).populate('team._user').populate('comments._user').populate('institution');
     console.log(ticketDb[0])
     res.json(ticketDb);
   } catch (error) {
@@ -38,14 +38,13 @@ const getTicket = async(req, res) => {
 // Get con todos los documentos
 const getTickets =  async(req, res) => {
   const usuarioId = req.query.usuarioId
-  const today = new Date()
   console.log(usuarioId)
   try {
     const user = await User.find({_id: usuarioId })
     const today = new Date()
     console.log(user[0].role)
     if (user[0].role === 'Admin') {
-      const ticketDb = await Ticket.find().populate('team._user');
+      const ticketDb = await Ticket.find().populate('team._user').populate('institution');
       const ticketsAll = await Ticket.countDocuments()
       const ticketsSolved = await Ticket.countDocuments({ status: 'Solucionado' })
       const ticketsUnsolved = await Ticket.countDocuments({status : 'Sin Solucionar'})
@@ -53,7 +52,7 @@ const getTickets =  async(req, res) => {
       res.json({data: ticketDb, ticketsSolved: ticketsSolved, ticketsUnsolved: ticketsUnsolved, ticketsAll: ticketsAll, ticketsExpired: ticketsExpired });
     }
     if (user[0].role === 'User') {
-      const ticketDb = await Ticket.find({'team._user': usuarioId}).populate('team._user');
+      const ticketDb = await Ticket.find({'team._user': usuarioId}).populate('team._user').populate('institution');
       const ticketsAll = await Ticket.countDocuments({'team._user': usuarioId})
       const ticketsSolved = await Ticket.countDocuments({ 'team._user': usuarioId, status: 'Solucionado' })
       const ticketsUnsolved = await Ticket.countDocuments({'team._user': usuarioId, status : 'Sin Solucionar'})
@@ -84,13 +83,21 @@ const getResolvedTickets = async (req,res) =>{
 // tickets agrupados entre un rango de fechas
 const rangeDate = async (req,res) =>{
   const ObjectId = mongoose.Types.ObjectId;
-  const usuarioId = req.query.usuarioId
-  const start_date = new Date(req.query.startDate)
-  const end_date = new Date(req.query.endDate)
+  const usuarioId = req.query.usuarioId;
+  const start_date = new Date(req.query.startDate);
+  const end_date = new Date(req.query.endDate);
+  const role = req.query.role;
   
   try {
       const ticketDb = await Ticket.aggregate(
         [
+          role === 'Admin'?
+          {
+            $match:{
+                      start_date : {$gte : start_date, $lte: end_date}
+            }
+          }
+          :
           {
             $match:{
                       team:  {$elemMatch: {_user : ObjectId(usuarioId)}},

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 
 const ticketSchema = new Schema({
-  name: {type: String, required: [true, 'Nombre obligatorio']},
+  institution: {type: Schema.Types.ObjectId, ref: 'Institution'},
   description: {type: String},
   team: [{
     _user :{
