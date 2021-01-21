@@ -9,7 +9,7 @@ const addTicket = async(req, res) => {
   console.log(body) 
   try {
     const ticketDb = await Ticket.create(body);
-    const newTicket = await ticketDb.populate('team._user').execPopulate()
+    const newTicket = await ticketDb.populate('team._user').populate('institution').execPopulate()
     console.log(newTicket)
     res.status(200).json(newTicket); 
   } catch (error) {
