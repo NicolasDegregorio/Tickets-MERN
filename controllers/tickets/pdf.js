@@ -3,11 +3,12 @@ import moment from 'moment'
 
 
 const prueba =  (req,res) => {
-    const {startDate, endDate, userName, noSolucionado, solucionado, total} = req.body;
+    const {startDate, endDate, userName, noSolucionado, solucionado, total, role} = req.body;
     const data = {
         startDate: moment(startDate,'YYYY-MM-DD').format('DD-MM-YYYY'),
         endDate: moment(endDate,'YYYY-MM-DD').format('DD-MM-YYYY'),
         userName: userName,
+        role: role,
         noSolucionado: noSolucionado,
         solucionado: solucionado,
         total: total
@@ -66,10 +67,10 @@ const generateCustomerInformation = (doc, data) => {
   
       .font("Helvetica-Bold")
       .text("Usuario:", 300, customerInformationTop)
+      .text("Rol:", 300, customerInformationTop + 15)
       .font("Helvetica")
       .text(data.userName, 350, customerInformationTop)
-      .font("Helvetica")
-      .text("vemos", 300, customerInformationTop + 15)
+      .text(data.role, 330, customerInformationTop + 15)
       .moveDown();
   
     generateHr(doc, 252);

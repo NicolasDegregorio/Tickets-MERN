@@ -48,7 +48,7 @@ const getTickets =  async(req, res) => {
       const ticketsAll = await Ticket.countDocuments()
       const ticketsSolved = await Ticket.countDocuments({ status: 'Solucionado' })
       const ticketsUnsolved = await Ticket.countDocuments({status : 'Sin Solucionar'})
-      const ticketsExpired = await Ticket.countDocuments({end_date : {$lte: today}})
+      const ticketsExpired = await Ticket.countDocuments({status : 'Sin Solucionar', end_date : {$lte: today}})
       res.json({data: ticketDb, ticketsSolved: ticketsSolved, ticketsUnsolved: ticketsUnsolved, ticketsAll: ticketsAll, ticketsExpired: ticketsExpired });
     }
     if (user[0].role === 'User') {
@@ -56,7 +56,7 @@ const getTickets =  async(req, res) => {
       const ticketsAll = await Ticket.countDocuments({'team._user': usuarioId})
       const ticketsSolved = await Ticket.countDocuments({ 'team._user': usuarioId, status: 'Solucionado' })
       const ticketsUnsolved = await Ticket.countDocuments({'team._user': usuarioId, status : 'Sin Solucionar'})
-      const ticketsExpired = await Ticket.countDocuments({'team._user': usuarioId, end_date : {$lte: today}})
+      const ticketsExpired = await Ticket.countDocuments({'team._user': usuarioId, status : 'Sin Solucionar', end_date : {$lte: today}})
       res.json({data: ticketDb, ticketsSolved: ticketsSolved, ticketsUnsolved: ticketsUnsolved, ticketsAll: ticketsAll, ticketsExpired: ticketsExpired });
     }
   } catch (error) {
